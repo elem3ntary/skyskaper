@@ -9,10 +9,10 @@ def read_input(path: str):
     Return list of str.
 
     >>> read_input("check.txt")
-    ['***21**', '452453*', '423145*', '*543215', '*35214*', '*41532*', '*2*1***']
+    ['***21**', '412453*', '423145*', '*543215', '*35214*', '*41532*', '*2*1***']
     """
     with open(path, 'r') as file:
-        return file.readlines()
+        return list(map(lambda line: line.strip(), file.readlines()))
 
 
 def left_to_right_check(input_line: str, pivot: int):
@@ -106,6 +106,8 @@ def check_horizontal_visibility(board: list):
 '*35214*', '*41532*', '*2*1***'])
     False
     """
+    if not check_uniqueness_in_rows(board):
+        return False
     board = board[1:6]
     for row in board:
         if row.count('*') == 2:
@@ -127,7 +129,15 @@ and visibility (top-bottom and vice versa).
 
     Same as for horizontal cases, but aggregated in one function for vertical case, i.e. columns.
 
-
+#     >>> check_columns(['***21**', '412453*', '423145*', '*543215', '*35214*', '*41532*', \
+# '*2*1***'])
+#     True
+#     >>> check_columns(['***21**', '412453*', '423145*', '*543215', '*35214*', '*41232*', \
+# '*2*1***'])
+#     False
+#     >>> check_columns(['***21**', '412553*', '423145*', '*543215', '*35214*', '*41532*', \
+# '*2*1***'])
+#     False
     >>> check_columns(['***21**', '412453*', '423145*', '*542315', '*35214*', '*41532*', '*2*1***'])
     False
     """
@@ -152,8 +162,6 @@ def check_skyscrapers(input_path: str):
     board = read_input(input_path)
     if not check_not_finished_board(board):
         return False
-    if not check_uniqueness_in_rows(board):
-        return False
     if not check_horizontal_visibility(board):
         return False
     if not check_columns(board):
@@ -162,7 +170,7 @@ def check_skyscrapers(input_path: str):
 
 
 if __name__ == "__main__":
-    import doctest
+    # import doctest
     # doctest.testmod()
-    doctest.run_docstring_examples(check_columns, globals())
-    # print(check_skyscrapers("check.txt"))
+    # doctest.run_docstring_examples(check_columns, globals())
+    print(check_skyscrapers("check.txt"))
